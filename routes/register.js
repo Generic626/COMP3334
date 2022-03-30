@@ -1,14 +1,11 @@
-const mongoose = require("mongoose");
 const express = require("express");
 const router = express.Router();
-const bodyParser = require("body-parser");
 const User = require("../models/user");
 const bcrypt = require("bcrypt");
 const saltRounds = 10;
 const generator = require("../methods/rand_words");
-
-const connection_string = process.env.DB_CONNECTION;
-mongoose.connect(connection_string);
+const concatHash = require('../methods/concat_hash');
+const bodyParser = require("body-parser");
 
 router.use(bodyParser.urlencoded({ extended: true }));
 
@@ -31,12 +28,7 @@ router
       // generate three random words
       const output = generator(3);
       // concat secure hash material
-      const plaintext =
-        output[0] +
-        process.env.KEY_HASH_1 +
-        output[1] +
-        process.env.KEY_HASH_2 +
-        output[2];
+      const plaintext = concatHash(output);
 
       console.log(output);
       console.log(process.env.KEY_HASH_1);

@@ -1,12 +1,8 @@
-const mongoose = require("mongoose");
 const User = require('../models/user');
 const express = require("express");
 const router = express.Router();
-const bodyParser = require("body-parser");
 const bcrypt = require("bcrypt");
-
-const connection_string = process.env.DB_CONNECTION;
-mongoose.connect(connection_string);
+const bodyParser = require("body-parser");
 
 router.use(bodyParser.urlencoded({ extended: true }));
 
@@ -20,22 +16,29 @@ router.route("/").get( (req,res)=>{
     const password = req.body.password;
 
     // check if the user account exist based on email
-    User.findOne({email:email}, (err, result)=>{
+    User.findOne({email:email}, (err, user)=>{
         if(err){
             console.log(err);
         }
         else{
             // if user has been found
-            if(result){
+            if(user){
                 // compare the inputted password with hash stored in DB
-                bcrypt.compare(password,result.password, (err,res)=>{
+                bcrypt.compare(password,user.password, (err,result)=>{
                     if(err){
                         console.log(err);
                     }
                     // if the password and hash is the same
-                    if(res == true){
+                    if(result == true){
                         console.log("logged in successful");
                         // render the main page
+                        res.redirect("/main");
+
+                        // log cookie?
+                    }
+                    else{
+                        console.log("cannot log in");
+                        alert("Logged in failed.");
                     }
                 });
             }
