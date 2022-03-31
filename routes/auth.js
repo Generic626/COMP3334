@@ -1,3 +1,6 @@
+require("dotenv").config(); 
+const CryptoJS = require("crypto-js");
+const cookieParser = require('cookie-parser');
 const User = require('../models/user');
 const express = require("express");
 const router = express.Router();
@@ -5,6 +8,7 @@ const bcrypt = require("bcrypt");
 const bodyParser = require("body-parser");
 
 router.use(bodyParser.urlencoded({ extended: true }));
+router.use(cookieParser());
 
 // Login page
 router.route("/").get( (req,res)=>{
@@ -30,14 +34,19 @@ router.route("/").get( (req,res)=>{
                     }
                     // if the password and hash is the same
                     if(result == true){
-                        console.log("logged in successful");
+                        console.log("Logged in successful");
+                        // setup encrypted cookie 
+                        const cipherID = CryptoJS.AES.encrypt(String(user._id), process.env.COOKIE_KEY).toString();
+                        console.log("[Encrypted ID] "+cipherID);
+
+                        res.cookie('user',cipherID)
                         // render the main page
                         res.redirect("/main");
 
-                        // log cookie?
+                        
                     }
                     else{
-                        console.log("cannot log in");
+                        console.log("Cannot log in");
                         alert("Logged in failed.");
                     }
                 });
