@@ -1,0 +1,22 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Buy detail</title>
+  </head>
+  <body>
+    <div>
+      <div>
+        <div><%= result.asset_name%></div>
+        <div><%= result.asset_desc%></div>
+        <div><%= result.created_date%></div>
+      </div>
+	  <form action="confirm" method="post">
+	    <input type="hidden" name="assetid" value=<%= assetid%>>
+	    <input type="submit" value="Buy now">
+	  </form>
+    </div>
+  </body>
+</html>
