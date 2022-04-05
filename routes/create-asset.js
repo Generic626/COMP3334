@@ -55,7 +55,7 @@ router
     console.log("[Encrypted ID] "+encryptedID);
     var bytes  = CryptoJS.AES.decrypt(encryptedID, process.env.COOKIE_KEY);
     var originalID = bytes.toString(CryptoJS.enc.Utf8);
-    console.log("[Decrypted ID] "+originalID);
+    console.log("[Decrypted ID] "+ originalID);
 
     // getting the current date time of the creation of the asset
     const today = new Date();
@@ -78,7 +78,11 @@ router
         asset: assetImage,
         created_date: creation_time_date,
         asset_hash: assetHash,
-        author:originalID,
+        author: originalID,
+        owner: originalID,
+        for_sell: false,
+        price: 0,
+        transcations: []
       });
       // insert the newly created asset to mongoDB
       asset.save((err, asset) => {

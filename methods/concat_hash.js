@@ -5,5 +5,6 @@ module.exports = function concatHash(input) {
     input[1] +
     process.env.KEY_HASH_2 +
     input[2]
+    
   );
 };
