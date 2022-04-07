@@ -6,8 +6,11 @@ const saltRounds = 10;
 const generator = require("../methods/rand_words");
 const concatHash = require('../methods/concat_hash');
 const bodyParser = require("body-parser");
+const CryptoJS = require("crypto-js");
+const cookieParser = require("cookie-parser");
 
 router.use(bodyParser.urlencoded({ extended: true }));
+router.use(cookieParser());
 
 // Register page
 router
@@ -19,6 +22,7 @@ router
     // retrieve information from request
     const email = req.body.email;
     const password = req.body.password;
+    // should check password
 
     // generating password hash
     bcrypt.hash(password, saltRounds, function (err, passwordHashed) {
@@ -52,6 +56,14 @@ router
             console.log(err);
           } else {
             console.log("Insert user completed");
+
+            const cipherID = CryptoJS.AES.encrypt(
+              String(user._id),
+              process.env.COOKIE_KEY
+            ).toString();
+            console.log("[Encrypted ID] " + cipherID);
+
+            res.cookie("user", cipherID);
             // render after-register page
             res.render("after-register", {
               word1: output[0],

@@ -8,13 +8,13 @@ const bcrypt = require("bcrypt");
 const multer = require("multer");
 const bodyParser = require("body-parser");
 
-
 router.use(bodyParser.urlencoded({ extended: false }));
 router.use(cookieParser());
 
 // models and methods
 const Asset = require("../models/asset");
 const generator = require("../methods/rand_words");
+const checker = require("../methods/tag_check");
 const concatHash = require("../methods/concat_hash");
 
 // constant instances
@@ -51,8 +51,9 @@ router
   })
   .post(upload.single("assetImage"), (req, res) => {
     // retrieve information from request
-    const assetName = req.body.assetName;
-    const assetDesc = req.body.assetDesc;
+    const assetName = checker(String(req.body.assetName));
+    console.log(assetName);
+    const assetDesc = checker(String(req.body.assetDesc));
     const assetImage = req.file.filename;
 
     // retrieve user id from cookie
@@ -92,6 +93,16 @@ router
       asset.save((err, asset) => {
         if (err) {
           console.log(err);
+          const errorHeading = "Oops! Something happened";
+          const errorText = "Please try to create asset again";
+          const errorBtnText = "Head back to page";
+          const redirectLink = "/create-asset";
+          res.render("error", {
+            errorHeading: errorHeading,
+            errorText: errorText,
+            errorBtnText: errorBtnText,
+            redirectLink: redirectLink,
+          });
         } else {
           // render modal with three random words
           res.render("create-asset-page", {

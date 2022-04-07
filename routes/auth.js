@@ -33,6 +33,16 @@ router
           bcrypt.compare(password, user.password, (err, result) => {
             if (err) {
               console.log(err);
+              const errorHeading = "Oops! Something happened";
+              const errorText = "Please try to login again";
+              const errorBtnText = "Head back to login";
+              const redirectLink = "/";
+              res.render("error", {
+                errorHeading: errorHeading,
+                errorText: errorText,
+                errorBtnText: errorBtnText,
+                redirectLink: redirectLink
+              });
             }
             // if the password and hash is the same
             if (result == true) {
@@ -52,7 +62,16 @@ router
               res.render("main-page");
             } else {
               console.log("Cannot log in");
-              alert("Logged in failed.");
+              const errorHeading = "Invalid user credentials";
+              const errorText = "Please try to login again";
+              const errorBtnText = "Head back to login";
+              const redirectLink = "/";
+              res.render("error", {
+                errorHeading: errorHeading,
+                errorText: errorText,
+                errorBtnText: errorBtnText,
+                redirectLink: redirectLink
+              });
             }
           });
         }

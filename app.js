@@ -11,6 +11,7 @@ const main = require('./routes/main');
 const create_asset = require('./routes/create-asset');
 const buy_asset = require('./routes/buy-detail');
 const buy_confirm = require('./routes/buy-confrim');
+const logout = require('./routes/logout');
 
 // connecting to mongoDB Atlas
 const connection_string = process.env.DB_CONNECTION;
@@ -29,6 +30,7 @@ app.use('/main', main);
 app.use('/create-asset', create_asset);
 app.use('/buy', buy_asset);
 app.use('/buy/confirm', buy_confirm);
+app.use('/logout', logout);
 
 app.listen(process.env.PORT, function(){
     console.log("listening to port "+ process.env.PORT);
