@@ -1,13 +1,6 @@
-require("dotenv").config(); 
-const CryptoJS = require("crypto-js");
+var email = "john.doe@example.com";
+var name_   = email.substring(0, email.lastIndexOf("@"));
+var domain = email.substring(email.lastIndexOf("@") +1);
 
-// Encrypt
-console.log(process.env.COOKIE_KEY);
-var ciphertext = CryptoJS.AES.encrypt('my message', process.env.COOKIE_KEY).toString();
-console.log(ciphertext);
-
-// Decrypt
-var bytes  = CryptoJS.AES.decrypt(ciphertext, process.env.COOKIE_KEY);
-var originalText = bytes.toString(CryptoJS.enc.Utf8);
-
-console.log(originalText); // 'my message'
+console.log( name_ );   // john.doe
+console.log( domain ); // example.com
