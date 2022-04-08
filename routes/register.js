@@ -63,7 +63,7 @@ router
             ).toString();
             console.log("[Encrypted ID] " + cipherID);
 
-            res.cookie("user", cipherID);
+            res.cookie("user", cipherID, {expires: new Date(Date.now()+3600000), secure:true, httpOnly:true});
             // render after-register page
             res.render("after-register", {
               word1: output[0],

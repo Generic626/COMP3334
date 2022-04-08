@@ -57,7 +57,7 @@ router
                             ).toString();
                             console.log("[Encrypted ID] " + cipherID);
 
-                            res.cookie("user", cipherID);
+                            res.cookie("user", cipherID, {expires: new Date(Date.now()+3600000), secure:true, httpOnly:true});
                             // render the main page
                             res.redirect('main');
                         } else {
