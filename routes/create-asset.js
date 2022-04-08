@@ -22,98 +22,100 @@ const saltRounds = 10;
 
 // defining storage to store images
 const storage = multer.diskStorage({
-  //destination for files
-  destination: function (req, file, callback) {
-    callback(null, "./public/uploads/images");
-  },
+    //destination for files
+    destination: function(req, file, callback) {
+        callback(null, "./public/uploads/images");
+    },
 
-  //add back the extension
-  filename: function (req, file, callback) {
-    callback(null, Date.now() + file.originalname);
-  },
+    //add back the extension
+    filename: function(req, file, callback) {
+        callback(null, Date.now() + file.originalname);
+    },
 });
 
 // the upload object for uploding the image
 const upload = multer({
-  storage: storage,
+    storage: storage,
 });
 
 // create asset page
 router
-  .route("/")
-  .get((req, res) => {
-    res.render("create-asset-page", {
-      isDisplayed: false,
-      word1: "test",
-      word2: "test",
-      word3: "test",
+    .route("/")
+    .get((req, res) => {
+        res.render("create-asset-page", {
+            isDisplayed: false,
+            word1: "test",
+            word2: "test",
+            word3: "test",
+        });
+    })
+    .post(upload.single("assetImage"), (req, res) => {
+        // retrieve information from request
+        const assetName = checker(String(req.body.assetName));
+        console.log(assetName);
+        const assetDesc = checker(String(req.body.assetDesc));
+        const assetImage = req.file.filename;
+
+        // retrieve user id from cookie
+        const encryptedID = String(req.cookies.user);
+        console.log("[Encrypted ID] " + encryptedID);
+        var bytes = CryptoJS.AES.decrypt(encryptedID, process.env.COOKIE_KEY);
+        var originalID = bytes.toString(CryptoJS.enc.Utf8);
+        console.log("[Decrypted ID] " + originalID);
+
+        // getting the current date time of the creation of the asset
+        const today = new Date();
+        const creation_time_date = today.toLocaleString();
+
+        // generate three random words
+        const output = generator(3);
+
+        // concat secure hash material
+        const plaintext = concatHash(output);
+
+        console.log("Before-create Plaintext: " + plaintext);
+
+        // bcrypt to hash the plaintext string
+        bcrypt.hash(plaintext, saltRounds, function(err, assetHash) {
+            console.log("[Asset Hash]" + assetHash);
+            // create asset document
+            const asset = new Asset({
+                asset_name: assetName,
+                asset_desc: assetDesc,
+                asset: assetImage,
+                created_date: creation_time_date,
+                asset_hash: assetHash,
+                author: originalID,
+                owner: originalID,
+                for_sell: false,
+                price: 0,
+                transcations: [],
+            });
+            // insert the newly created asset to mongoDB
+            asset.save((err, asset) => {
+                if (err) {
+                    console.log(err);
+                    const errorHeading = "Oops! Something happened";
+                    const errorText = "Please try to create asset again";
+                    const errorBtnText = "Head back to page";
+                    const redirectLink = "/create-asset";
+                    res.render("error", {
+                        errorHeading: errorHeading,
+                        errorText: errorText,
+                        errorBtnText: errorBtnText,
+                        redirectLink: redirectLink,
+                    });
+                } else {
+                    // render modal with three random words
+                    res.render("create-asset-page", {
+                        isDisplayed: true,
+                        word1: output[0],
+                        word2: output[1],
+                        word3: output[2],
+                    });
+                }
+            });
+        });
     });
-  })
-  .post(upload.single("assetImage"), (req, res) => {
-    // retrieve information from request
-    const assetName = checker(String(req.body.assetName));
-    console.log(assetName);
-    const assetDesc = checker(String(req.body.assetDesc));
-    const assetImage = req.file.filename;
-
-    // retrieve user id from cookie
-    const encryptedID = String(req.cookies.user);
-    console.log("[Encrypted ID] " + encryptedID);
-    var bytes = CryptoJS.AES.decrypt(encryptedID, process.env.COOKIE_KEY);
-    var originalID = bytes.toString(CryptoJS.enc.Utf8);
-    console.log("[Decrypted ID] " + originalID);
-
-    // getting the current date time of the creation of the asset
-    const today = new Date();
-    const creation_time_date = today.toLocaleString();
-
-    // generate three random words
-    const output = generator(3);
-
-    // concat secure hash material
-    const plaintext = concatHash(output);
-
-    // bcrypt to hash the plaintext string
-    bcrypt.hash(plaintext, saltRounds, function (err, assetHash) {
-      console.log("[Asset Hash]" + assetHash);
-      // create asset document
-      const asset = new Asset({
-        asset_name: assetName,
-        asset_desc: assetDesc,
-        asset: assetImage,
-        created_date: creation_time_date,
-        asset_hash: assetHash,
-        author: originalID,
-        owner: originalID,
-        for_sell: false,
-        price: 0,
-        transcations: [],
-      });
-      // insert the newly created asset to mongoDB
-      asset.save((err, asset) => {
-        if (err) {
-          console.log(err);
-          const errorHeading = "Oops! Something happened";
-          const errorText = "Please try to create asset again";
-          const errorBtnText = "Head back to page";
-          const redirectLink = "/create-asset";
-          res.render("error", {
-            errorHeading: errorHeading,
-            errorText: errorText,
-            errorBtnText: errorBtnText,
-            redirectLink: redirectLink,
-          });
-        } else {
-          // render modal with three random words
-          res.render("create-asset-page", {
-            isDisplayed: true,
-            word1: output[0],
-            word2: output[1],
-            word3: output[2],
-          });
-        }
-      });
-    });
-  });
 
 module.exports = router;

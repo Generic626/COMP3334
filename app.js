@@ -1,5 +1,5 @@
 // pacakges
-require("dotenv").config(); 
+require("dotenv").config();
 const express = require("express");
 const app = express();
 const mongoose = require("mongoose");
@@ -12,6 +12,7 @@ const create_asset = require('./routes/create-asset');
 const buy_asset = require('./routes/buy-detail');
 const buy_confirm = require('./routes/buy-confrim');
 const logout = require('./routes/logout');
+const sell = require('./routes/sell');
 
 // connecting to mongoDB Atlas
 const connection_string = process.env.DB_CONNECTION;
@@ -31,7 +32,8 @@ app.use('/create-asset', create_asset);
 app.use('/buy', buy_asset);
 app.use('/buy/confirm', buy_confirm);
 app.use('/logout', logout);
+app.use('/sell', sell);
 
-app.listen(process.env.PORT, function(){
-    console.log("listening to port "+ process.env.PORT);
+app.listen(process.env.PORT, function() {
+    console.log("listening to port " + process.env.PORT);
 });
