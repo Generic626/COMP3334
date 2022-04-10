@@ -62,8 +62,7 @@ router
               console.log(err);
               console.log("Register user error");
               const errorHeading = "Cannot register user";
-              const errorText =
-                "Cannot register user, please try again later";
+              const errorText = "Cannot register user, please try again later";
               const errorBtnText = "Head back to Register";
               const redirectLink = "/register";
               res.render("error", {
@@ -74,25 +73,42 @@ router
               });
             } else {
               passport.authenticate("local")(req, res, () => {
-                console.log("Insert user completed");
-                const cipherID = CryptoJS.AES.encrypt(
-                  String(user._id),
-                  process.env.COOKIE_KEY
-                ).toString();
-                console.log("[Encrypted ID] " + cipherID);
+                User.findOne({ email: email }, (err, result) => {
+                  if (err) {
+                    const errorHeading = "Something went wrong";
+                    const errorText = "Please try to login again";
+                    const errorBtnText = "Head back to login";
+                    const redirectLink = "/";
+                    res.render("error", {
+                      errorHeading: errorHeading,
+                      errorText: errorText,
+                      errorBtnText: errorBtnText,
+                      redirectLink: redirectLink,
+                    });
+                  } else {
+                    // setup encrypted cookie
+                    console.log("[Debug] " + result._id);
+                    const cipherID = CryptoJS.AES.encrypt(
+                      String(result._id),
+                      process.env.COOKIE_KEY
+                    ).toString();
+                    console.log("[Encrypted ID] " + cipherID);
 
-                res.cookie("user", cipherID, {
-                  expires: new Date(Date.now() + 3600000),
-                  secure: true,
-                  httpOnly: true,
-                });
-                // render after-register page
-                res.render("after-register", {
-                  word1: output[0],
-                  word2: output[1],
-                  word3: output[2],
-                  redirectLink: "/main",
-                  redirectLinkText: "Proceed to main",
+                    // res.cookie("user", cipherID, {
+                    //     expires: new Date(Date.now() + 3600000),
+                    //     secure: true,
+                    //     httpOnly: true,
+                    // });
+                    res.cookie("user", cipherID);
+                    // render after-register page
+                    res.render("after-register", {
+                      word1: output[0],
+                      word2: output[1],
+                      word3: output[2],
+                      redirectLink: "/main",
+                      redirectLinkText: "Proceed to main",
+                    });
+                  }
                 });
               });
             }

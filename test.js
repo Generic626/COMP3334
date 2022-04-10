@@ -1,6 +1,10 @@
-// var og_string = "<script> \\ : ? + = ; - \" . ( ) ' </script>"
-// var new_string = og_string.replace(/[<>\/\\:?+="'.;\(\)-]+/g,"");
-// console.log(new_string);
+var CryptoJS = require("crypto-js");
 
-var date_ = new Date(Date.now()+3600000) // one hour
-console.log(String(date_));
+// Encrypt
+var ciphertext = CryptoJS.AES.encrypt('my message', 'secret key 123').toString();
+
+// Decrypt
+var bytes  = CryptoJS.AES.decrypt(ciphertext, 'secret key 123');
+var originalText = bytes.toString(CryptoJS.enc.Utf8);
+
+console.log(originalText); // 'my message'
