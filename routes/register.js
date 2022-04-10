@@ -13,7 +13,6 @@ const passport = require("passport");
 router.use(bodyParser.urlencoded({ extended: true }));
 router.use(cookieParser());
 
-
 // Register page
 router
   .route("/")
@@ -42,6 +41,17 @@ router
       if (err) {
         console.log(err);
         console.log("Recovery hash error");
+        const errorHeading = "Oops! Something happened";
+        const errorText =
+          "Something went wrong internally, please try again later";
+        const errorBtnText = "Head back to Register";
+        const redirectLink = "/register";
+        res.render("error", {
+          errorHeading: errorHeading,
+          errorText: errorText,
+          errorBtnText: errorBtnText,
+          redirectLink: redirectLink,
+        });
       } else {
         // register the user
         User.register(
@@ -51,6 +61,17 @@ router
             if (err) {
               console.log(err);
               console.log("Register user error");
+              const errorHeading = "Cannot register user";
+              const errorText =
+                "Cannot register user, please try again later";
+              const errorBtnText = "Head back to Register";
+              const redirectLink = "/register";
+              res.render("error", {
+                errorHeading: errorHeading,
+                errorText: errorText,
+                errorBtnText: errorBtnText,
+                redirectLink: redirectLink,
+              });
             } else {
               passport.authenticate("local")(req, res, () => {
                 console.log("Insert user completed");
@@ -70,6 +91,8 @@ router
                   word1: output[0],
                   word2: output[1],
                   word3: output[2],
+                  redirectLink: "/main",
+                  redirectLinkText: "Proceed to main",
                 });
               });
             }

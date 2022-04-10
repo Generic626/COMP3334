@@ -8,7 +8,6 @@ router
     req.logout();
     res.clearCookie("user");
     res.redirect("/");
-  })
-  .post((req, res) => {});
+  });
 
 module.exports = router;

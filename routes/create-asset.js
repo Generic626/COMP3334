@@ -103,7 +103,7 @@ router
                     console.log(err);
                     const errorHeading = "Oops! Something happened";
                     const errorText = "Please try to create asset again";
-                    const errorBtnText = "Head back to page";
+                    const errorBtnText = "Head back to create asset";
                     const redirectLink = "/create-asset";
                     res.render("error", {
                         errorHeading: errorHeading,

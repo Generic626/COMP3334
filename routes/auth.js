@@ -42,7 +42,18 @@ router
           redirectLink: redirectLink,
         });
       } else {
-        passport.authenticate("local")(req, res, () => {
+        passport.authenticate("local")(req, res, (err) => {
+          const errorHeading = "Invalid user credentials";
+          const errorText = "Please try to login again";
+          const errorBtnText = "Head back to login";
+          const redirectLink = "/";
+          res.render("error", {
+            errorHeading: errorHeading,
+            errorText: errorText,
+            errorBtnText: errorBtnText,
+            redirectLink: redirectLink,
+          });
+
           console.log("Logged in successful");
           // setup encrypted cookie
           const cipherID = CryptoJS.AES.encrypt(
