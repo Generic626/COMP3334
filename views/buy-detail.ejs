@@ -12,6 +12,8 @@
         <div><%= result.asset_name%></div>
         <div><%= result.asset_desc%></div>
         <div><%= result.created_date%></div>
+		<div><%= result.price%></div>
+		<div><img src="../uploads/images/<%= result.asset%>"></div>
       </div>
 	  <form action="confirm" method="post">
 	    <input type="hidden" name="assetid" value=<%= assetid%>>
