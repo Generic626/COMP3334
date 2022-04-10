@@ -3,10 +3,6 @@ require("dotenv").config();
 const express = require("express");
 const app = express();
 const mongoose = require("mongoose");
-const session = require('express-session');
-const passport = require('passport');
-const passportLocalMongoose = require('passport-local-mongoose');
-const User = require("./models/user");
 
 // routes
 const auth = require('./routes/auth');
@@ -18,25 +14,15 @@ const buy_confirm = require('./routes/buy-confrim');
 const logout = require('./routes/logout');
 const sell = require('./routes/sell');
 
-// middleware setup
-app.set('view engine', 'ejs');
-app.use(express.static("public"));
-app.use(session({
-    secret: process.env.SESSION_KEY,
-    saveUninitialized:false,
-    resave:false
-}));
-app.use(passport.initialize());
-app.use(passport.session());
-
-passport.use(User.createStrategy());
-passport.serializeUser(User.serializeUser());
-passport.deserializeUser(User.deserializeUser());
-
-
 // connecting to mongoDB Atlas
 const connection_string = process.env.DB_CONNECTION;
 mongoose.connect(connection_string);
+
+
+// middleware setup
+app.set('view engine', 'ejs');
+app.use(express.static("public"));
+
 
 // setting up routers
 app.use('/', auth);

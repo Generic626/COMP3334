@@ -83,8 +83,20 @@
       <form method="post" action="/create-asset" enctype="multipart/form-data">
         <div class="form-group">
           <label for="file">File</label>
-          <input type="file" class="form-control" id="file" name="assetImage"/>
+          <input type="file" class="form-control" id="file" name="assetImage" onchange="loadFile(event)"/>
+          <img id="output"/ style="display: block;margin-top:30px;margin-left: auto;margin-right: auto;width: 50%;">
         </div>
+        <script>
+          var loadFile = function(event) {
+            var output = document.getElementById('output');
+            output.src = URL.createObjectURL(event.target.files[0]);
+            output.onload = function() {
+              URL.revokeObjectURL(output.src) // free memory
+            }
+          };
+        </script>
+
+
         <div class="form-group">
           <label for="name">Name</label>
           <input type="text" class="form-control" id="name" name="assetName"/>

@@ -42,12 +42,18 @@ const upload = multer({
 router
     .route("/")
     .get((req, res) => {
-        res.render("create-asset-page", {
-            isDisplayed: false,
-            word1: "test",
-            word2: "test",
-            word3: "test",
-        });
+        if (req.isAuthenticated()) {
+            res.render("create-asset-page", {
+                isDisplayed: false,
+                word1: "Do-Not-Use",
+                word2: "Do-Not-Use",
+                word3: "Do-Not-Use",
+            });
+        }
+        else{
+            res.redirect("/");
+        }
+        
     })
     .post(upload.single("assetImage"), (req, res) => {
         // retrieve information from request
