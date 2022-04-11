@@ -18,7 +18,7 @@ router.route("/").post( (req,res)=>{
   //get user id
   const encryptedID = String(req.cookies.user);
   if(typeof encryptedID === 'undefined') {
-    return res.send("no login");
+    return res.redirect("/");
   }
   var bytes  = CryptoJS.AES.decrypt(encryptedID, process.env.COOKIE_KEY);
   const originalID = bytes.toString(CryptoJS.enc.Utf8);
@@ -26,7 +26,8 @@ router.route("/").post( (req,res)=>{
   //check database
   Asset.findById(id, (err, result) => {
     if (err) {
-      res.send(err);
+	  console.log(err);
+      res.redirect("/buy");
     } else {
       if(result.for_sell || result.owner != originalID) {
         var seller = result.owner;
@@ -34,7 +35,8 @@ router.route("/").post( (req,res)=>{
         var ctime = new Date().toLocaleString('en-GB');
 		getHash(seller, price, ctime);
       } else {
-        res.send("not for sale");
+		console.log("not for sell or same originalID");
+        res.redirect("/buy");
       }
     }
   });
