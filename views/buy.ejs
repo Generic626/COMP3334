@@ -70,7 +70,6 @@
                         <div class="col-sm-4" style="margin-bottom: 3%;margin-top: 1%;">
                             <div class="card" style="width: 400px">
                                 <img class="card-img-top" src="uploads/images/<%=Assets[i]['asset']%>" style="width: 100%" />
-                                <form action="/buy/confirm" method="post">
                                     <div class="card-body">
                                         <h4>Name:
                                             <%=Assets[i]['asset_name']%>
@@ -81,12 +80,10 @@
                                         <p>Created Date:
                                             <%=Assets[i]['created_date']%>
                                         </p>
-                                        <input type="hidden" name="assetid" value="<%=Assets[i]['_id']%>">
-                                        <button type="submit" class="btn btn-info btn-sm w-100">
+                                        <a href="/buy/<%=Assets[i]['_id']%>" class="btn btn-info btn-sm w-100">
 										Buy
-										</button>
+										</a>
                                     </div>
-                                </form>
                             </div>
                         </div>
                         <% } %>
