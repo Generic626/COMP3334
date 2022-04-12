@@ -42,7 +42,7 @@ router
           redirectLink: redirectLink,
         });
       } else {
-        passport.authenticate("local")(req, res, (err) => {
+        passport.authenticate("local",{ failureRedirect: '/login-error', failureMessage: true })(req, res, (err) => {
           const errorHeading = "Invalid user credentials";
           const errorText = "Please try to login again";
           const errorBtnText = "Head back to login";
@@ -55,7 +55,14 @@ router
               redirectLink: redirectLink,
             });
           }
-
+          // if (!resultUser) {
+          //   res.render("error", {
+          //     errorHeading: errorHeading,
+          //     errorText: errorText,
+          //     errorBtnText: errorBtnText,
+          //     redirectLink: redirectLink,
+          //   });
+          // }
           console.log("Logged in successful");
           User.findOne({ email: email }, (err, result) => {
             if (err) {

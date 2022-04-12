@@ -19,6 +19,7 @@ const logout = require('./routes/logout');
 const sell = require('./routes/sell');
 const forget_password = require('./routes/forget-password');
 const sell_cancel = require('./routes/sell-cancel');
+const login_error = require('./routes/login_failed');
 
 // middleware setup
 app.set('view engine', 'ejs');
@@ -49,8 +50,9 @@ app.use('/buy', buy_asset);
 app.use('/buy/confirm', buy_confirm);
 app.use('/logout', logout);
 app.use('/sell', sell);
-app.use('/forget-password', forget_password)
-app.use('/sell/cancel', sell_cancel)
+app.use('/forget-password', forget_password);
+app.use('/sell/cancel', sell_cancel);
+app.use('/login-error', login_error)
 
 app.listen(process.env.PORT, function() {
     console.log("listening to port " + process.env.PORT);
