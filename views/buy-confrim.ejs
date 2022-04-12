@@ -76,8 +76,17 @@
 				<div class="col-sm" style="background-color: antiquewhite;  border-style: solid; border-color: black; "><%= word2%></div>
 				<div class="col-sm" style="background-color: antiquewhite;  border-style: solid; border-color: black; "><%= word3%></div>
 			  </div>
-			  <a href='/main' class="btn btn-sm btn-danger ">Done</a>
+			  <a href='#' id='redirect' class="btn btn-sm btn-danger"  onclick="hideElements()">Done</a> 
 			</div>
+
+            <script>
+                function hideElements() {
+                  var confirmed = confirm("Are you sure? The three words would not be displayed again.");
+                  if(confirmed){
+                    document.getElementById("redirect").href = '/main';
+                  }
+                }
+            </script>
     
             <!-- Footer Partial -->
             <%- include('partials/footer'); %>

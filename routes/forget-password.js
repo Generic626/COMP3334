@@ -61,7 +61,6 @@ router
             const generator = require("../methods/rand_words");
             const output = generator(3);
             const new_recovery_text = concatHash(output);
-
             bcrypt.hash(
               new_recovery_text,
               saltRounds,

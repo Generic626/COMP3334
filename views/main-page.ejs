@@ -28,6 +28,11 @@
                 width: 100%;
                 height: 60px;
             }
+            img {
+                width:  700px;
+                height: 400px;
+                object-fit: cover;
+            }
         </style>
         <script>
             $(function() {
@@ -80,7 +85,7 @@
                 <div class="row">
                     <% if(Assets != null) { %>
                         <% for(var i = 0; i < Assets.length; i++) { %>
-                            <div class="col-sm-4" style="margin-bottom: 3%;margin-top: 1%;">
+                            <div class="col-sm-12 col-md-6 col-lg-4" style="margin-bottom: 3%;margin-top: 1%;">
                                 <div class="card" style="width: 400px">
                                     <img class="card-img-top" src="uploads/images/<%=Assets[i]['asset']%>" style="width: 100%" />
                                     <div class="card-body">
