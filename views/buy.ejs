@@ -1,6 +1,6 @@
 <!-- Header Partial -->
 <%- include('partials/header'); %>
-	<title>Buy</title>
+    <title>Buy</title>
     </head>
 
     <body>
@@ -39,47 +39,38 @@
             <h1 style="text-align: center">Art Digital</h1>
         </div>
         <!-- Navbar Partial -->
-        <nav
-            class="navbar navbar-expand-sm bg-dark navbar-dark justify-content-center"
-            >
+        <nav class="navbar navbar-expand-sm bg-dark navbar-dark justify-content-center">
             <ul class="nav navbar-nav">
-            <li class="nav-item">
-                <a class="nav-link" href="/main">Home</a>
-            </li>
-            <li class="nav-item">
-                <a class="nav-link" href="/create-asset">Create</a>
-            </li>
-            <li class="nav-item">
-                <a class="nav-link" href="/buy">Buy</a>
-            </li>
-            <ul class="mr-auto">
-                <li class="nav-item dropdown">
-                <a
-                    class="nav-link dropdown-toggle"
-                    href="#"
-                    id="dropdown"
-                    role="button"
-                    data-toggle="dropdown"
-                    aria-haspopup="true"
-                    aria-expanded="false"
-                >
+                <li class="nav-item">
+                    <a class="nav-link" href="/main">Home</a>
+                </li>
+                <li class="nav-item">
+                    <a class="nav-link" href="/create-asset">Create</a>
+                </li>
+                <li class="nav-item">
+                    <a class="nav-link" href="/buy">Buy</a>
+                </li>
+                <ul class="mr-auto">
+                    <li class="nav-item dropdown">
+                        <a class="nav-link dropdown-toggle" href="#" id="dropdown" role="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
                 Placeholder 
                 </a>
-                <div class="dropdown-menu" aria-labelledby="dropdown">
-                    <a class="dropdown-item" href="/logout">Logout</a>
-                </div>
-                </li>
+                        <div class="dropdown-menu" aria-labelledby="dropdown">
+                            <a class="dropdown-item" href="/logout">Logout</a>
+                        </div>
+                    </li>
+                </ul>
             </ul>
-            </ul>
-            </nav>
-            <!-- Items Owned by Logged In User Items Include: Price, Name of Item, Description and Owner Name with "Sell Button"-->
-            <div class="container">
-                <div class="row">
-                    <% if(Assets != null) { %>
-                        <% for(var i = 0; i < Assets.length; i++) { %>
-                            <div class="col-sm-4" style="margin-bottom: 3%;margin-top: 1%;">
-                                <div class="card" style="width: 400px">
-                                    <img class="card-img-top" src="uploads/images/<%=Assets[i]['asset']%>" style="width: 100%" />
+        </nav>
+        <!-- Items Owned by Logged In User Items Include: Price, Name of Item, Description and Owner Name with "Sell Button"-->
+        <div class="container">
+            <div class="row">
+                <% if(Assets != null) { %>
+                    <% for(var i = 0; i < Assets.length; i++) { %>
+                        <div class="col-sm-4" style="margin-bottom: 3%;margin-top: 1%;">
+                            <div class="card" style="width: 400px">
+                                <img class="card-img-top" src="uploads/images/<%=Assets[i]['asset']%>" style="width: 100%" />
+                                <form action="/buy/confirm" method="post">
                                     <div class="card-body">
                                         <h4>Name:
                                             <%=Assets[i]['asset_name']%>
@@ -90,15 +81,17 @@
                                         <p>Created Date:
                                             <%=Assets[i]['created_date']%>
                                         </p>
-                                        <a class="btn btn-info btn-sm w-100" href="buy/<%=Assets[i]['_id']%>">
+                                        <input type="hidden" name="assetid" value="<%=Assets[i]['_id']%>">
+                                        <button type="submit" class="btn btn-info btn-sm w-100">
 										Buy
-										</a>
+										</button>
                                     </div>
-                                </div>
+                                </form>
                             </div>
+                        </div>
+                        <% } %>
                             <% } %>
-                                <% } %>
-                </div>
             </div>
-            <!-- Footer Partial -->
-            <%- include('partials/footer'); %>
+        </div>
+        <!-- Footer Partial -->
+        <%- include('partials/footer'); %>
