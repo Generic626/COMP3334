@@ -107,10 +107,19 @@
                                     <p>Created Date:
                                         <%=Assets[i]['created_date']%>
                                     </p>
+                                    <p>
+                                        Price:
+                                        <% if (Assets[i]['price'] == 0 && Assets[i]['for_sell'] == false) {%> Not Sold yet
+                                            <%} else {%>
+                                                <%=Assets[i]['price']%>
+                                                    <%}%>
+                                    </p>
                                     <div class="d-flex m-2">
                                         <button type="button" class="btn btn-info btn-sm w-50" data-toggle="modal" data-target="#sell" data-assetid="<%=Assets[i]['_id']%>">
-                <%if (Assets[i]['price'] > 0 && Assets[i]['for_sell'] == true) {%> Resell <% } else { %>Sell<% } %>
-                                        </button>
+                                            <%if (Assets[i]['price'] > 0 && Assets[i]['for_sell'] == true) {%> Resell
+                                                <% } else { %>Sell
+                                                    <% } %>
+                                                        </button>
                                         <button type="button" class="btn btn-danger btn-sm w-50" data-toggle="modal" data-target="<% if (Assets[i]['price'] > 0 && Assets[i]['for_sell'] == true) {%>#cancel<%} else {%>#view<%}%>" data-assetid="<%=Assets[i]['_id']%>" data-transaction='<%-JSON.stringify(Assets[i]["transcations"]) %>'>
                 <%if (Assets[i]['price'] > 0 && Assets[i]['for_sell'] == true) {%> Cancel Sell <% } else { %>View<% } %>
                                         </button>
