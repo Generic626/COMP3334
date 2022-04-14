@@ -11,7 +11,7 @@ router.use(bodyParser.urlencoded({ extended: true }));
 router.route('/').post((req, res) => {
     var assetId = req.body.assetid;
     var price = req.body.price;
-    console.log("assetId" + assetId);
+    console.log("[Sell] assetId" + assetId);
     var words = [];
     words.push(req.body.fword);
     words.push(req.body.sword);
@@ -34,7 +34,7 @@ router.route('/').post((req, res) => {
                         redirectLink: redirectLink
                     });
                 } else if (result) {
-                    console.log("Success");
+                    console.log("[Sell] Success");
                     Assets.findOneAndUpdate({ '_id': assetId }, { 'price': price, 'for_sell': true }, { returnNewDocument: true }, function(error, re) {
                         console.log(re);
                     });

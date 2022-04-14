@@ -8,13 +8,13 @@ router
     .route("/")
     .get((req, res) => {
         if (req.isAuthenticated()) {
-            console.log("Cookies is " + req.cookies.user);
+            console.log("[Main] Cookies is " + req.cookies.user);
             if (req.cookies.user != undefined) {
                 var encryptedId = String(req.cookies.user);
-                console.log("encryptedId is " + encryptedId);
+                console.log(" [Main] EncryptedId is " + encryptedId);
                 var bytes = CryptoJS.AES.decrypt(encryptedId, process.env.COOKIE_KEY);
                 var originalID = bytes.toString(CryptoJS.enc.Utf8);
-                console.log("originalId is " + originalID);
+                console.log("[Main] OriginalId is " + originalID);
                 Assets.find({ owner: originalID }, function(error, result) {
                     if (!error) {
                         var assets = result;

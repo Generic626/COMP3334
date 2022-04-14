@@ -64,10 +64,10 @@ router
 
         // retrieve user id from cookie
         const encryptedID = String(req.cookies.user);
-        console.log("[Encrypted ID] " + encryptedID);
+        console.log("[Create Asset -> Encrypted ID] " + encryptedID);
         var bytes = CryptoJS.AES.decrypt(encryptedID, process.env.COOKIE_KEY);
         var originalID = bytes.toString(CryptoJS.enc.Utf8);
-        console.log("[Decrypted ID] " + originalID);
+        console.log("[Create Asset -> Decrypted ID] " + originalID);
 
         // getting the current date time of the creation of the asset
         const today = new Date();
@@ -79,11 +79,11 @@ router
         // concat secure hash material
         const plaintext = concatHash(output);
 
-        console.log("Before-create Plaintext: " + plaintext);
+        console.log("[Create Asset -> Plaintext] Before-create Plaintext: " + plaintext);
 
         // bcrypt to hash the plaintext string
         bcrypt.hash(plaintext, saltRounds, function(err, assetHash) {
-            console.log("[Asset Hash]" + assetHash);
+            console.log("[Create Asset -> Asset Hash]" + assetHash);
             // create asset document
             const asset = new Asset({
                 asset_name: assetName,

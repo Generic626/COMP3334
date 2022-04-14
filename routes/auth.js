@@ -30,7 +30,7 @@ router
     req.login(user, (err) => {
       if (err) {
         console.log(err);
-        console.log("Cannot log in");
+        console.log("[Log -> Error]Cannot log in");
         const errorHeading = "Invalid user credentials";
         const errorText = "Please try to login again";
         const errorBtnText = "Head back to login";
@@ -63,7 +63,7 @@ router
           //     redirectLink: redirectLink,
           //   });
           // }
-          console.log("Logged in successful");
+          console.log("[Login]Logged in successful");
           User.findOne({ email: email }, (err, result) => {
             if (err) {
               const errorHeading = "Something went wrong";
@@ -78,12 +78,11 @@ router
               });
             } else {
               // setup encrypted cookie
-              console.log("[Debug] " + result._id);
               const cipherID = CryptoJS.AES.encrypt(
                 String(result._id),
                 process.env.COOKIE_KEY
               ).toString();
-              console.log("[Encrypted ID] " + cipherID);
+              console.log("[Login -> Hashed ID] " + cipherID);
 
               // res.cookie("user", cipherID, {
               //     expires: new Date(Date.now() + 3600000),

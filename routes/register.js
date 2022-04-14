@@ -27,24 +27,24 @@ router
     const reEneteredPassword = req.body.reEnteredPassword;
 
     if (String(password) == String(reEneteredPassword)) {
-      console.log(email);
-      console.log(password);
+      console.log("[Register Email] "+email);
+      console.log("[Register Password] "+password);
       // validate password using the checker method
       if (checker(password) != null) {
         // generate three random words
         const output = generator(3);
         // concat secure hash material
         const plaintext = concatHash(output);
-        console.log(output);
-        console.log(process.env.KEY_HASH_1);
-        console.log(process.env.KEY_HASH_2);
-        console.log(plaintext);
+        console.log("[Regsiter]"+output);
+        console.log("[Regsiter]"+process.env.KEY_HASH_1);
+        console.log("[Regsiter]"+process.env.KEY_HASH_2);
+        console.log("[Regsiter]"+plaintext);
 
         // generate secure hash
         bcrypt.hash(plaintext, saltRounds, function (err, recoveryHash) {
           if (err) {
             console.log(err);
-            console.log("Recovery hash error");
+            console.log("[Regsiter] Recovery hash error");
             const errorHeading = "Oops! Something happened";
             const errorText =
               "Something went wrong internally, please try again later";
@@ -64,7 +64,7 @@ router
               (err, user) => {
                 if (err) {
                   console.log(err);
-                  console.log("Register user error");
+                  console.log("[Regsiter] Register user error");
                   const errorHeading = "Cannot register user";
                   const errorText =
                     "Cannot register user, please try again later";
@@ -92,12 +92,11 @@ router
                         });
                       } else {
                         // setup encrypted cookie
-                        console.log("[Debug] " + result._id);
                         const cipherID = CryptoJS.AES.encrypt(
                           String(result._id),
                           process.env.COOKIE_KEY
                         ).toString();
-                        console.log("[Encrypted ID] " + cipherID);
+                        console.log("[Regsiter Encrypted ID] " + cipherID);
 
                         // res.cookie("user", cipherID, {
                         //     expires: new Date(Date.now() + 3600000),
@@ -125,7 +124,7 @@ router
         const errorHeading = "Password does not match the requirement";
         const errorText = "Please make sure that you include at least 1 upper and lower case letter, 1 number and [@$!%*#?&] 1 of these characters.";
         const errorBtnText = "Head back to register";
-        const redirectLink = "register";
+        const redirectLink = "/register";
         res.render("error", {
           errorHeading: errorHeading,
           errorText: errorText,
@@ -137,7 +136,7 @@ router
       const errorHeading = "Passwords are not identical";
       const errorText = "Please make sure that you enter the right password";
       const errorBtnText = "Head back to register";
-      const redirectLink = "register";
+      const redirectLink = "/register";
       res.render("error", {
         errorHeading: errorHeading,
         errorText: errorText,

@@ -35,7 +35,7 @@ router.route("/").post((req, res) => {
                 var ctime = new Date().toLocaleString('en-GB');
                 getHash(seller, price, ctime);
             } else {
-                console.log("not for sell or same originalID");
+                console.log("[Buy Confirm -> Error] not for sell or same originalID");
                 res.redirect("/buy");
             }
         }
@@ -50,6 +50,7 @@ router.route("/").post((req, res) => {
                     asset_hash: newHash,
                     for_sell: false,
                     owner: originalID,
+                    price:0,
                     $push: {
                         transcations: {
                             seller_id: seller,
@@ -59,7 +60,7 @@ router.route("/").post((req, res) => {
                         }
                     }
                 }
-                console.log(change);
+                console.log("[Buy Confirm] "+change);  
                 update(change);
             };
         });
@@ -70,8 +71,8 @@ router.route("/").post((req, res) => {
             if (err) {
                 console.log(err);
             } else {
-                console.log("done");
-                console.log(output[0], output[1], output[2]);
+                console.log("[Buy Confirm] done");
+                console.log("[Buy Confirm] "+output[0], output[1], output[2]);
                 res.render("buy-confrim", {
                     word1: output[0],
                     word2: output[1],

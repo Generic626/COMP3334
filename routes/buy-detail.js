@@ -12,7 +12,7 @@ router.route("/").get((req, res) => {
             var encryptedId = String(req.cookies.user);
             var bytes = CryptoJS.AES.decrypt(encryptedId, process.env.COOKIE_KEY);
             var originalID = bytes.toString(CryptoJS.enc.Utf8);
-            console.log("originalId is " + originalID);
+            console.log("[Buy Detail] " + originalID);
             Asset.find({ for_sell: true, owner: {$ne:originalID} }, function(error, result) {
                 if (!error) {
                     console.log(result);
@@ -49,7 +49,7 @@ router.route("/:assetid").get((req, res) => {
                         res.redirect("/buy");
                     }
                 } else {
-                    console.log("no result");
+                    console.log("[Buy Detail] no result");
                     res.redirect("/buy");
                 }
             }
