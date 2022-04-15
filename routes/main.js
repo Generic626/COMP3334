@@ -11,7 +11,7 @@ router
             console.log("[Main] Cookies is " + req.cookies.user);
             if (req.cookies.user != undefined) {
                 var encryptedId = String(req.cookies.user);
-                console.log(" [Main] EncryptedId is " + encryptedId);
+                console.log("[Main] EncryptedId is " + encryptedId);
                 var bytes = CryptoJS.AES.decrypt(encryptedId, process.env.COOKIE_KEY);
                 var originalID = bytes.toString(CryptoJS.enc.Utf8);
                 console.log("[Main] OriginalId is " + originalID);

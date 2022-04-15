@@ -85,21 +85,25 @@
                                         <%=Assets[i]['asset_name']%>
                                     </h4>
                                     <p>Description:
-                                        <%=Assets[i]['asset_desc']%>
+                                        <% if(String(Assets[i]['asset_desc']).length < 30){ %> 
+                                            <%=Assets[i]['asset_desc']%>
+                                        <% } else {%>
+                                            <%=String(Assets[i]['asset_desc']).substring(0, 29)+"..."%>
+                                        <%}%>
                                     </p>
                                     <p>Created Date:
                                         <%=Assets[i]['created_date']%>
                                     </p>
                                     <p>
                                         Price:
-                                        <% if (Assets[i]['price'] == 0 && Assets[i]['for_sell'] == false) {%> Not Sold yet
+                                        <% if (Assets[i]['price'] == 0 && Assets[i]['for_sell'] == false) {%> Not For Sale
                                             <%} else {%>
                                                 <%=Assets[i]['price']%>
                                                     <%}%>
                                     </p>
                                     <div class="d-flex m-2">
                                         <button type="button" class="btn btn-info btn-sm w-50" data-toggle="modal" data-target="#sell" data-assetid="<%=Assets[i]['_id']%>">
-                                            <%if (Assets[i]['price'] > 0 && Assets[i]['for_sell'] == true) {%> Resell
+                                            <%if (Assets[i]['price'] > 0 && Assets[i]['for_sell'] == true) {%> Update Price
                                                 <% } else { %>Sell
                                                     <% } %>
                                                         </button>
